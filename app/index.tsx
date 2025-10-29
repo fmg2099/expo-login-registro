@@ -11,13 +11,16 @@ import { MyContext } from "./Context";
 import * as Crypto from 'expo-crypto';
 import { Link, router } from "expo-router";
 
-//https://docs.expo.dev/develop/user-interface/fonts/
-//https://reactsvgicons.com/react-svg-icons-guide
+/*
+	Aplicación para demostrar la implementación de una pantalla de login usando fetch y una API que espera FormData.
 
-//https://docs.expo.dev/router/introduction/
-//https://docs.expo.dev/router/navigating-pages/
-
-//https://react.dev/learn/passing-data-deeply-with-context
+	Recursos de Aprendizaje:
+		https://docs.expo.dev/develop/user-interface/fonts/
+		https://reactsvgicons.com/react-svg-icons-guide
+		https://docs.expo.dev/router/introduction/
+		https://docs.expo.dev/router/navigating-pages/
+		https://react.dev/learn/passing-data-deeply-with-context
+*/
 
 export default function Index() {
 
@@ -38,7 +41,7 @@ export default function Index() {
 			passValue);
 
 		const form = new FormData();
-		form.append('token','code37');
+		form.append('token','code37');  //la API espera una llave cuyo valor es arbitrariamente code37
 		form.append('user',userValue);
 		form.append('pass', digest);
 
@@ -61,16 +64,17 @@ export default function Index() {
 		.catch( err=>{console.log(err)});
 	}
 
+	const onButtonRegister = async ()=>
+	{
+		console.log('Por implementar :)');
+	}
+
   return (
     <View style={styles.container}>
+		{/* IconRocket es un componente definido en app/iconrocket.tsx, el cual es un SVGElement, osea una imagen vectorial*/}
 		<IconRocket width="150" height="150"></IconRocket>
 		<Text style={styles.title}>Appify</Text>
-		<Text style={styles.subtitle}>¡Te damos la bienvenida!</Text>
-
-		<Link href="./pruebafoto" asChild>
-			<Button title="Prueba de imagen"></Button>
-		</Link>
-		
+		<Text style={styles.subtitle}>¡Te damos la bienvenida!</Text>		
 		<View style={styles.inputfieldlabel}>
 			<Text >Usuario</Text>
 			<TextInput style={styles.input} onChangeText={setUserValue}></TextInput>
@@ -79,21 +83,28 @@ export default function Index() {
 			<Text >Contraseña</Text>
 			<TextInput style={styles.input} onChangeText={setPassValue} secureTextEntry></TextInput>
 		</View>
-		{failedLogin? (<Text style={styles.error}>fallo al login</Text>):undefined}
+		{/* Dentro del JSX/TSX podemos poner codigo condicional para mostrar componentes según sea necesario */}
+		{failedLogin? (<Text style={styles.error}>Error al hacer login</Text>):undefined}
+		{/* Los iconos de los botones están definidos en app/iconrobot.tsx */}
 		<Pressable style={styles.botonconlogo} onPress={onButtonLogin} >
 			<IconRobot width='32' height='32'></IconRobot>
 			<Text>Log in!</Text>
 		</Pressable>
-		<Text >¿No tienes una cuenta?</Text>
-		<Pressable style={styles.botonconlogo}>
+		<Text style={{fontWeight:'bold'}} >¿No tienes una cuenta?</Text>
+		<Pressable style={styles.botonconlogo} onPress={onButtonRegister} >
 			<IconRobot width='32' height='32'></IconRobot>
-			<Text>Regístrate.</Text>
+			<Text>Regístrate</Text>
 		</Pressable>
 
     </View>
 	
   );
 }
+/*
+		<Link href="./pruebafoto" asChild>
+			<Button title="Prueba de imagen"></Button>
+		</Link>
+*/
 
 const styles=StyleSheet.create(
 	{
@@ -108,7 +119,8 @@ const styles=StyleSheet.create(
 		},
 		subtitle:{
 			fontFamily:'poppins',
-			fontSize:18
+			fontSize:18,
+			marginVertical: 10,
 		},
 		inputfieldlabel:
 		{
@@ -133,7 +145,10 @@ const styles=StyleSheet.create(
 			borderRadius:5,
 			borderColor:'#000',
 			borderWidth:2,
-			width:150
+			width:150,
+			marginVertical:10,
+			justifyContent:'flex-start',
+			gap:10
 		},
 		error:{
 			padding:5,
